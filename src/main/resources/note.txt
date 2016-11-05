@@ -1,0 +1,12 @@
+merge()时会先进行查询
+remove() detach对象会报错 可以先merge()或者直接根据id删除
+
+select(root)默认为createQuery(T)创建时的from(T),一致时可省略
+
+orphanRemoval???
+
+CascadeType.MERGE会级联更新 查询时会级联……
+
+Join<Build, Project> join = root.join("project")==>root.get("project").get("id") == join.get("id")
+
+multiselect for vo 必须有带参构造方法？
