@@ -1,9 +1,12 @@
 package com.cat.jpa.dao.impl;
 
 import com.cat.jpa.dao.CommonDao;
+import com.cat.jpa.tool.helper.QueryCallback;
+import com.cat.jpa.tool.helper.SingleCallback;
 import com.cat.jpa.tool.jpa.Page;
-import com.cat.jpa.tool.jpa.QueryCallback;
+import com.cat.jpa.tool.jpa.Rule;
 import com.cat.jpa.tool.jpa.Sort;
+import com.cat.jpa.tool.jpa.Sorts;
 import com.cat.jpa.tool.kit.ReflectKit;
 import com.cat.jpa.tool.kit.ValidateKit;
 
@@ -15,6 +18,7 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.EntityType;
 import javax.persistence.metamodel.Metamodel;
 import java.io.Serializable;
@@ -84,10 +88,10 @@ public class CommonDaoImpl<E, K extends Serializable> implements CommonDao<E, K>
     public final int deleteById(K k) {
         assert k != null;
 
-        CriteriaDelete<E> query = builder.createCriteriaDelete(entityClass);
-        query.where(builder.equal(query.from(entityClass).get(idColumn), k));
+        CriteriaDelete<E> criteria = builder.createCriteriaDelete(entityClass);
+        criteria.where(builder.equal(criteria.from(entityClass).get(idColumn), k));
 
-        return manager.createQuery(query).executeUpdate();
+        return manager.createQuery(criteria).executeUpdate();
     }
 
     @Override
@@ -103,9 +107,9 @@ public class CommonDaoImpl<E, K extends Serializable> implements CommonDao<E, K>
         if (ValidateKit.empty(ks)) {
             return 0;
         }
-        CriteriaDelete<E> query = builder.createCriteriaDelete(entityClass);
-        query.where(query.from(entityClass).get(idColumn).in(ks));
-        return manager.createQuery(query).executeUpdate();
+        CriteriaDelete<E> criteria = builder.createCriteriaDelete(entityClass);
+        criteria.where(criteria.from(entityClass).get(idColumn).in(ks));
+        return manager.createQuery(criteria).executeUpdate();
     }
 
     @Override
@@ -124,9 +128,9 @@ public class CommonDaoImpl<E, K extends Serializable> implements CommonDao<E, K>
 
     @Override
     public final long deleteAll() {
-        CriteriaDelete<E> query = builder.createCriteriaDelete(entityClass);
-        query.from(entityClass);
-        return manager.createQuery(query).executeUpdate();
+        CriteriaDelete<E> criteria = builder.createCriteriaDelete(entityClass);
+        criteria.from(entityClass);
+        return manager.createQuery(criteria).executeUpdate();
     }
 
     @Override
@@ -162,17 +166,23 @@ public class CommonDaoImpl<E, K extends Serializable> implements CommonDao<E, K>
 
     @Override
     public final List<E> findList() {
-        CriteriaQuery<E> query = builder().createQuery(entityClass);
-        query.from(entityClass);
-        return manager.createQuery(query).getResultList();
+        CriteriaQuery<E> criteria = builder().createQuery(entityClass);
+        criteria.from(entityClass);
+        return manager.createQuery(criteria).getResultList();
     }
 
     @Override
     public final long count() {
         CriteriaBuilder builder = builder();
-        CriteriaQuery<Long> query = builder.createQuery(Long.class);
-        query.select(builder.count(query.from(entityClass)));
-        return manager.createQuery(query).getSingleResult();
+        CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
+        criteria.select(builder.count(criteria.from(entityClass)));
+        return manager.createQuery(criteria).getSingleResult();
+    }
+
+    /*------------------the following is setting options for criteria------------------*/
+    public final <T, X> CriteriaQuery<T> sort(CriteriaQuery<T> criteria, Root<X> root, Sort sort) {
+        sort = sort == null ? Sort.of(idColumn, Rule.DESC) : sort;
+        return Sorts.sort(builder, criteria, root, sort);
     }
 
     /*------------------the following is setting query before return------------------*/
@@ -188,22 +198,32 @@ public class CommonDaoImpl<E, K extends Serializable> implements CommonDao<E, K>
         return query.getResultList();
     }
 
-    /*------------------the following is query template by callback------------------*/
+    /*------------------the following is single query template by callback------------------*/
 
-    public final E find(QueryCallback<E> callback) {
+    public final E find(SingleCallback<E> callback) {
         return callback.find(manager, entityClass);
     }
 
-    public final List<E> findList(Page page, Sort sort, QueryCallback<E> callback) {
+    public final List<E> findList(Page page, Sort sort, SingleCallback<E> callback) {
         return callback.findList(manager, entityClass, page, sort);
     }
 
-    public final List<E> findList(Page page, List<Sort> sorts, QueryCallback<E> callback) {
+    public final List<E> findList(Page page, List<Sort> sorts, SingleCallback<E> callback) {
         return callback.findList(manager, entityClass, page, sorts);
     }
 
-    public final long count(QueryCallback<E> callback) {
+    public final long count(SingleCallback<E> callback) {
         return callback.count(manager, entityClass);
+    }
+
+    /*------------------the following is multi query template by callback------------------*/
+
+    public final <R> List<R> findList(Page page, Sort sort, Class<R> result, QueryCallback<R, E> callback) {
+        return callback.findList(manager, result, entityClass, page, sort);
+    }
+
+    public final List<E> findList(Page page, Sort sort, QueryCallback<E, E> callback) {
+        return callback.findList(manager, entityClass, entityClass, page, sort);
     }
 
 }

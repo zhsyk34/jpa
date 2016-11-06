@@ -20,9 +20,10 @@ public class InitTest {
     protected UserDao userDao;
     @Resource
     protected BuildDao buildDao;
+    @Resource
+    protected UnitDao unitDao;
     /*
-	@Resource
-	protected UnitDao unitDao;
+
 	@Resource
 	protected HouseDao houseDao;
 	@Resource

@@ -1,26 +1,33 @@
 package com.cat.jpa.tool.jpa;
 
-import lombok.Getter;
+public final class Sort {
 
-@Getter
-public class Sort {
+    private final static String DEFAULT_COLUMN = "id";
 
-    private final String column;
+    private final String field;
     private final Rule rule;
 
-    private Sort(String column, Rule rule) {
-        this.column = column;
+    private Sort(String field, Rule rule) {
+        this.field = field;
         this.rule = rule;
     }
 
-    public static Sort of(String column, Rule rule) {
-        if (column == null || column.isEmpty()) {
-            return null;
+    public static Sort of(String field, Rule rule) {
+        if (field == null || field.isEmpty()) {
+            field = DEFAULT_COLUMN;
         }
         if (rule == null) {
             rule = Rule.ASC;
         }
-        return new Sort(column, rule);
+        return new Sort(field, rule);
+    }
+
+    public String field() {
+        return field;
+    }
+
+    public Rule rule() {
+        return rule;
     }
 
 }

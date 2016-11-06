@@ -2,9 +2,9 @@ package com.cat.jpa.dao.impl;
 
 import com.cat.jpa.dao.ProjectDao;
 import com.cat.jpa.entity.Project;
-import com.cat.jpa.tool.jpa.Conditions;
+import com.cat.jpa.tool.helper.SingleCallback;
 import com.cat.jpa.tool.jpa.Page;
-import com.cat.jpa.tool.jpa.QueryCallback;
+import com.cat.jpa.tool.jpa.Restricts;
 import com.cat.jpa.tool.jpa.Sort;
 import com.cat.jpa.tool.kit.ValidateKit;
 import org.springframework.stereotype.Repository;
@@ -30,9 +30,9 @@ public class ProjectDaoImpl extends CommonDaoImpl<Project, Long> implements Proj
 
     @Override
     public List<Project> findList(String name, LocalDate begin, LocalDate end, Page page, Sort sort) {
-        return super.findList(page, sort, new QueryCallback<Project>() {
+        return super.findList(page, sort, new SingleCallback<Project>() {
             @Override
-            protected List<Predicate> execute(Root<Project> root) {
+            protected List<Predicate> restrict(Root<Project> root) {
                 return predicates(root, name, begin, end);
             }
         });
@@ -40,16 +40,16 @@ public class ProjectDaoImpl extends CommonDaoImpl<Project, Long> implements Proj
 
     @Override
     public long count(String name, LocalDate begin, LocalDate end) {
-        return super.count(new QueryCallback<Project>() {
+        return super.count(new SingleCallback<Project>() {
             @Override
-            protected List<Predicate> execute(Root<Project> root) {
+            protected List<Predicate> restrict(Root<Project> root) {
                 return predicates(root, name, begin, end);
             }
         });
     }
 
     private List<Predicate> predicates(Root<Project> root, String name, LocalDate begin, LocalDate end) {
-        Conditions<Predicate> list = Conditions.instance();
+        Restricts<Predicate> list = Restricts.instance();
         if (ValidateKit.notEmpty(name)) {
             list.append(builder.like(root.get("name"), "%" + name + "%"));
         }

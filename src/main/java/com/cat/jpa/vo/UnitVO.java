@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class BuildVO {
+public class UnitVO {
 
     private Long id;
 
@@ -21,8 +21,11 @@ public class BuildVO {
 
     private LocalDateTime updateTime;
 
+    private Long buildId;
+
+    private String buildName;
+
     private Long projectId;
 
     private String projectName;
-
 }

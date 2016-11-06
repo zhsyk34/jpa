@@ -1,6 +1,9 @@
 package com.cat.jpa.tool.jpa;
 
-public class Page {
+public final class Page {
+    private static final int DEFAULT_NUMBER = 1;
+    private static final int DEFAULT_SIZE = 10;
+
     private final int number;
     private final int size;
 
@@ -10,7 +13,9 @@ public class Page {
     }
 
     public static Page of(int number, int size) {
-        return number > 0 && size > 0 ? new Page(number, size) : null;
+        number = number < 1 ? DEFAULT_NUMBER : number;
+        size = size < 1 ? DEFAULT_SIZE : size;
+        return new Page(number, size);
     }
 
     public int offset() {

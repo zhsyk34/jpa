@@ -5,18 +5,18 @@ import com.google.common.collect.Iterables;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Conditions<T> {
+public final class Restricts<T> {
 
     private final List<T> list = new ArrayList<>();
 
-    private Conditions() {
+    private Restricts() {
     }
 
-    public static <T> Conditions<T> instance() {
-        return new Conditions<>();
+    public static <T> Restricts<T> instance() {
+        return new Restricts<>();
     }
 
-    public Conditions append(T t) {
+    public Restricts append(T t) {
         list.add(t);
         return this;
     }

@@ -142,7 +142,7 @@ public class UserDaoTest extends InitTest {
     public void findList3() throws Exception {
         Sort sort = Sort.of("name", Rule.DESC);
         Page page = Page.of(1, 3);
-        List<User> list = userDao.findList("l", null, null, null, page, sort);
+        List<User> list = userDao.findList("l", Gender.FEMALE, null, null, page, sort);
         list.forEach(this::print);
 
     }

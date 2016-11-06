@@ -5,6 +5,7 @@ import com.cat.jpa.tool.jpa.Rule;
 import com.cat.jpa.tool.jpa.Sort;
 import org.junit.Test;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
@@ -45,7 +46,8 @@ public class BuildDaoTest extends InitTest {
         Page page = Page.of(1, 5);
         Sort sort = Sort.of("id", Rule.DESC);
         List<Long> ids = Arrays.asList(1L, 2L, 3L);
-        buildDao.findVOList(ids, "a", null, null, page, sort);
+        LocalDate end = LocalDate.of(2015, 12, 13);
+        buildDao.findVOList(ids, "a", null, end, page, sort);
     }
 
 }

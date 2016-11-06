@@ -1,31 +1,29 @@
 package com.cat.jpa.tool.jpa;
 
 import com.cat.jpa.tool.kit.ValidateKit;
-import com.google.common.collect.Lists;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Root;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class Orders {
-
-    public static <E> Order from(CriteriaBuilder builder, Root<E> root, Sort sort) {
+public final class Orders {
+    public static <X> Order from(CriteriaBuilder builder, Root<X> root, Sort sort) {
         if (sort == null) {
-            return null;//sort = Sort.of(idColumn, null);
+            return null;
         }
-        Rule rule = sort.getRule();
-        Path<?> path = root.get(sort.getColumn());
+        Rule rule = sort.rule();
+        Path<?> path = root.get(sort.field());
         return (rule == Rule.DESC) ? builder.desc(path) : builder.asc(path);
     }
 
-    public static <E> List<Order> from(CriteriaBuilder builder, Root<E> root, List<Sort> sorts) {
+    public static <X> List<Order> from(CriteriaBuilder builder, Root<X> root, List<Sort> sorts) {
         if (ValidateKit.empty(sorts)) {
             return null;
         }
-        List<Order> list = Lists.newArrayList();
-        sorts.forEach(sort -> list.add(from(builder, root, sort)));
-        return list;
+        return sorts.stream().filter(sort -> sort != null).map(sort -> from(builder, root, sort)).collect(Collectors.toList());
     }
+
 }
