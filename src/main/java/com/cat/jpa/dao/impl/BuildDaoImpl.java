@@ -4,7 +4,8 @@ import com.cat.jpa.dao.BuildDao;
 import com.cat.jpa.entity.Build;
 import com.cat.jpa.entity.Project;
 import com.cat.jpa.tool.helper.QueryCallback;
-import com.cat.jpa.tool.helper.SingleCallback;
+import com.cat.jpa.tool.helper.SingleCount;
+import com.cat.jpa.tool.helper.SingleQuery;
 import com.cat.jpa.tool.jpa.Page;
 import com.cat.jpa.tool.jpa.Restricts;
 import com.cat.jpa.tool.jpa.Sort;
@@ -36,29 +37,29 @@ public class BuildDaoImpl extends CommonDaoImpl<Build, Long> implements BuildDao
 
     @Override
     public List<Build> findList(Long projectId, String name, LocalDate begin, LocalDate end, Page page, Sort sort) {
-        return super.findList(page, sort, new SingleCallback<Build>() {
+        return super.findList(page, sort, new SingleQuery<Build>() {
             @Override
-            protected List<Predicate> restrict(Root<Build> root) {
-                return simple(root, root.join("project"), projectId, name, begin, end);
+            protected List<Predicate> execute(Root<Build> root) {
+                return simple(root, projectId, name, begin, end);
             }
         });
     }
 
     @Override
     public long count(Long projectId, String name, LocalDate begin, LocalDate end) {
-        return super.count(new SingleCallback<Build>() {
+        return super.count(new SingleCount<Build>() {
             @Override
-            protected List<Predicate> restrict(Root<Build> root) {
-                return simple(root, root.join("project"), projectId, name, begin, end);
+            protected List<Predicate> execute(Root<Build> root) {
+                return simple(root, projectId, name, begin, end);
             }
         });
     }
 
     @Override
     public List<Build> findList(Collection<Long> ids, String name, LocalDate begin, LocalDate end, Page page, Sort sort) {
-        return super.findList(page, sort, new SingleCallback<Build>() {
+        return super.findList(page, sort, new SingleQuery<Build>() {
             @Override
-            protected List<Predicate> restrict(Root<Build> root) {
+            protected List<Predicate> execute(Root<Build> root) {
                 return range(root, ids, name, begin, end);
             }
         });
@@ -66,9 +67,9 @@ public class BuildDaoImpl extends CommonDaoImpl<Build, Long> implements BuildDao
 
     @Override
     public long count(Collection<Long> ids, String name, LocalDate begin, LocalDate end) {
-        return super.count(new SingleCallback<Build>() {
+        return super.count(new SingleCount<Build>() {
             @Override
-            protected List<Predicate> restrict(Root<Build> root) {
+            protected List<Predicate> execute(Root<Build> root) {
                 return range(root, ids, name, begin, end);
             }
         });
@@ -78,7 +79,7 @@ public class BuildDaoImpl extends CommonDaoImpl<Build, Long> implements BuildDao
     public List<BuildVO> findVOList(Collection<Long> ids, String name, LocalDate begin, LocalDate end, Page page, Sort sort) {
         return super.findList(page, sort, BuildVO.class, new QueryCallback<BuildVO, Build>() {
             @Override
-            protected <BuildVO> void execute(CriteriaQuery<BuildVO> criteria, Root<Build> root) {
+            protected void execute(CriteriaQuery<BuildVO> criteria, Root<Build> root) {
                 Join<Build, Project> join = root.join("project");
                 criteria.where(Iterables.toArray(range(root, ids, name, begin, end), Predicate.class));
                 criteria.multiselect(
@@ -106,7 +107,9 @@ public class BuildDaoImpl extends CommonDaoImpl<Build, Long> implements BuildDao
         return list;
     }*/
 
-    private List<Predicate> simple(Root<Build> root, Join<Build, Project> join, Long projectId, String name, LocalDate begin, LocalDate end) {
+    private List<Predicate> simple(Root<Build> root, Long projectId, String name, LocalDate begin, LocalDate end) {
+        Join<Build, Project> join = root.join("project");
+
         Restricts<Predicate> list = Restricts.instance();
         if (ValidateKit.valid(projectId)) {
             list.append(builder.equal(join.get("id"), projectId));

@@ -1,8 +1,10 @@
 package com.cat.jpa.dao.impl;
 
 import com.cat.jpa.dao.CommonDao;
+import com.cat.jpa.tool.helper.CountCallback;
 import com.cat.jpa.tool.helper.QueryCallback;
-import com.cat.jpa.tool.helper.SingleCallback;
+import com.cat.jpa.tool.helper.SingleCount;
+import com.cat.jpa.tool.helper.SingleQuery;
 import com.cat.jpa.tool.jpa.Page;
 import com.cat.jpa.tool.jpa.Rule;
 import com.cat.jpa.tool.jpa.Sort;
@@ -200,30 +202,40 @@ public class CommonDaoImpl<E, K extends Serializable> implements CommonDao<E, K>
 
     /*------------------the following is single query template by callback------------------*/
 
-    public final E find(SingleCallback<E> callback) {
+    public final E find(SingleQuery<E> callback) {
         return callback.find(manager, entityClass);
     }
 
-    public final List<E> findList(Page page, Sort sort, SingleCallback<E> callback) {
-        return callback.findList(manager, entityClass, page, sort);
-    }
-
-    public final List<E> findList(Page page, List<Sort> sorts, SingleCallback<E> callback) {
+    public final List<E> findList(Page page, List<Sort> sorts, SingleQuery<E> callback) {
         return callback.findList(manager, entityClass, page, sorts);
     }
 
-    public final long count(SingleCallback<E> callback) {
+    public final List<E> findList(Page page, Sort sort, SingleQuery<E> callback) {
+        return callback.findList(manager, entityClass, page, sort);
+    }
+
+    public final long count(SingleCount<E> callback) {
         return callback.count(manager, entityClass);
     }
 
     /*------------------the following is multi query template by callback------------------*/
 
+    public final <R> R find(Class<R> result, QueryCallback<R, E> callback) {
+        return callback.find(manager, result, entityClass);
+    }
+
+    public final <R> List<R> findList(Page page, List<Sort> sorts, Class<R> result, QueryCallback<R, E> callback) {
+        return callback.findList(manager, result, entityClass, page, sorts);
+    }
+
     public final <R> List<R> findList(Page page, Sort sort, Class<R> result, QueryCallback<R, E> callback) {
         return callback.findList(manager, result, entityClass, page, sort);
     }
 
-    public final List<E> findList(Page page, Sort sort, QueryCallback<E, E> callback) {
-        return callback.findList(manager, entityClass, entityClass, page, sort);
+    //count(F),allow E base
+    @Deprecated
+    public final <F> long count(Class<F> clazz, CountCallback<F> callback) {
+        return callback.count(manager, clazz);
     }
 
 }

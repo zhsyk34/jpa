@@ -2,7 +2,8 @@ package com.cat.jpa.dao.impl;
 
 import com.cat.jpa.dao.ProjectDao;
 import com.cat.jpa.entity.Project;
-import com.cat.jpa.tool.helper.SingleCallback;
+import com.cat.jpa.tool.helper.SingleCount;
+import com.cat.jpa.tool.helper.SingleQuery;
 import com.cat.jpa.tool.jpa.Page;
 import com.cat.jpa.tool.jpa.Restricts;
 import com.cat.jpa.tool.jpa.Sort;
@@ -22,17 +23,17 @@ import java.util.List;
 public class ProjectDaoImpl extends CommonDaoImpl<Project, Long> implements ProjectDao {
     @Override
     public Project find(String name) {
-        CriteriaQuery<Project> query = builder.createQuery(Project.class);
-        Root<Project> root = query.from(Project.class);
-        query.where(builder.equal(root.get("name"), name));
-        return super.find(manager.createQuery(query));
+        CriteriaQuery<Project> criteria = builder.createQuery(Project.class);
+        Root<Project> root = criteria.from(Project.class);
+        criteria.where(builder.equal(root.get("name"), name));
+        return super.find(manager.createQuery(criteria));
     }
 
     @Override
     public List<Project> findList(String name, LocalDate begin, LocalDate end, Page page, Sort sort) {
-        return super.findList(page, sort, new SingleCallback<Project>() {
+        return super.findList(page, sort, new SingleQuery<Project>() {
             @Override
-            protected List<Predicate> restrict(Root<Project> root) {
+            protected List<Predicate> execute(Root<Project> root) {
                 return predicates(root, name, begin, end);
             }
         });
@@ -40,9 +41,9 @@ public class ProjectDaoImpl extends CommonDaoImpl<Project, Long> implements Proj
 
     @Override
     public long count(String name, LocalDate begin, LocalDate end) {
-        return super.count(new SingleCallback<Project>() {
+        return super.count(new SingleCount<Project>() {
             @Override
-            protected List<Predicate> restrict(Root<Project> root) {
+            protected List<Predicate> execute(Root<Project> root) {
                 return predicates(root, name, begin, end);
             }
         });

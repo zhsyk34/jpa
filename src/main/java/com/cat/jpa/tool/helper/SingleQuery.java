@@ -12,11 +12,11 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 
 /**
- * select single entity
+ * select from single entity and return it
  *
  * @param <T>
  */
-public abstract class SingleCallback<T> extends QueryCallback<T, T> {
+public abstract class SingleQuery<T> extends QueryCallback<T, T> {
 
     public final T find(EntityManager manager, Class<T> clazz) {
         return super.find(manager, clazz, clazz);
@@ -31,12 +31,12 @@ public abstract class SingleCallback<T> extends QueryCallback<T, T> {
     }
 
     @Override
-    protected <R> void execute(CriteriaQuery<R> criteria, Root<T> root) {
-        List<Predicate> list = this.restrict(root);
+    protected final void execute(CriteriaQuery<T> criteria, Root<T> root) {
+        List<Predicate> list = this.execute(root);
         if (ValidateKit.notEmpty(list)) {
             criteria.where(Iterables.toArray(list, Predicate.class));
         }
     }
 
-    protected abstract List<Predicate> restrict(Root<T> root);
+    protected abstract List<Predicate> execute(Root<T> root);
 }

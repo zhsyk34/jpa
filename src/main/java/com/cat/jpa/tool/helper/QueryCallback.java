@@ -69,27 +69,10 @@ public abstract class QueryCallback<R, F> {
         return query.getResultList();
     }
 
-    public final long count(EntityManager manager, Class<F> from) {
-        assert manager != null && from != null;
-
-        CriteriaBuilder builder = manager.getCriteriaBuilder();
-        CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
-        Root<F> root = criteria.from(from);
-        criteria.select(builder.count(root));
-
-        this.execute(criteria, root);
-
-        return manager.createQuery(criteria).getSingleResult();
-    }
-
     /**
      * in here,you can set
-     * 1.the join search
-     * 2.the select from
-     * 3.the conditions
-     *
-     * @param <R> result type class
+     * 1.the join search,2.the select from,3.the conditions
      */
-    protected abstract <R> void execute(CriteriaQuery<R> criteria, Root<F> root);
+    protected abstract void execute(CriteriaQuery<R> criteria, Root<F> root);
 
 }
