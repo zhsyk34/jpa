@@ -13,21 +13,21 @@ import java.time.LocalDateTime;
 @Accessors(chain = true)
 @Entity
 public class House {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @Column(nullable = false, length = 60)
-    private String name;
+	@Column(nullable = false, length = 60)
+	private String name;
 
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createTime = LocalDateTime.now();
+	@Column(nullable = false, updatable = false)
+	private LocalDateTime createTime = LocalDateTime.now();
 
-    @Column(nullable = false)
-    private LocalDateTime updateTime = LocalDateTime.now();
+	@Column(nullable = false)
+	private LocalDateTime updateTime = LocalDateTime.now();
 
-    @ManyToOne(cascade = {CascadeType.PERSIST}, fetch = FetchType.LAZY)
-    @JoinColumn(name = "unitId", foreignKey = @ForeignKey(name = "fk_house_unit"), nullable = false)
-    @JsonIgnore
-    private Unit unit;
+	@ManyToOne(cascade = {CascadeType.PERSIST}, fetch = FetchType.LAZY)
+	@JoinColumn(name = "unitId", foreignKey = @ForeignKey(name = "fk_house_unit"), nullable = false)
+	@JsonIgnore
+	private Unit unit;
 }

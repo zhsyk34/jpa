@@ -10,10 +10,10 @@ import java.util.List;
 
 public interface UserDao extends CommonDao<User, Long> {
 
-    User find(String name, String password);
+	User find(String name, String password);
 
-    List<User> findList(String name, Gender gender, LocalDate begin, LocalDate end, Page page, Sort sort);
+	List<User> findList(String name, Gender gender, LocalDate begin, LocalDate end, Page page, Sort sort);
 
-    long count(String name, Gender gender, LocalDate begin, LocalDate end);
+	long count(String name, Gender gender, LocalDate begin, LocalDate end);
 
 }

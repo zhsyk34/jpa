@@ -7,11 +7,11 @@ import javax.persistence.criteria.Root;
 
 public final class Sorts {
 
-    public static <T, X> CriteriaQuery<T> sort(CriteriaBuilder builder, CriteriaQuery<T> criteria, Root<X> root, Sort sort) {
-        Order order = Orders.from(builder, root, sort);
-        if (order != null) {
-            criteria.orderBy(order);
-        }
-        return criteria;
-    }
+	public static <T, X> CriteriaQuery<T> sort(CriteriaBuilder builder, CriteriaQuery<T> criteria, Root<X> root, Sort sort) {
+		Order order = Orders.from(builder, root, sort);
+		if (order != null) {
+			criteria.orderBy(order);
+		}
+		return criteria;
+	}
 }

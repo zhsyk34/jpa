@@ -9,10 +9,10 @@ import java.util.List;
 
 public interface ProjectDao extends CommonDao<Project, Long> {
 
-    Project find(String name);
+	Project find(String name);
 
-    List<Project> findList(String name, LocalDate begin, LocalDate end, Page page, Sort sort);
+	List<Project> findList(String name, LocalDate begin, LocalDate end, Page page, Sort sort);
 
-    long count(String name, LocalDate begin, LocalDate end);
+	long count(String name, LocalDate begin, LocalDate end);
 
 }

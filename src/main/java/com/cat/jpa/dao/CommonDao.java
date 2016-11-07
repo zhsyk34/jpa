@@ -8,42 +8,42 @@ import java.util.List;
 
 public interface CommonDao<E, K extends Serializable> {
 
-    EntityManager manager();
+	EntityManager manager();
 
-    CriteriaBuilder builder();
+	CriteriaBuilder builder();
 
-    K id(E e);
+	K id(E e);
 
-    void save(E e);
+	void save(E e);
 
-    void saves(Collection<E> es);
+	void saves(Collection<E> es);
 
-    int deleteById(K k);
+	int deleteById(K k);
 
-    int deleteByIds(K[] ks);
+	int deleteByIds(K[] ks);
 
-    int deleteByIds(Collection<K> ks);
+	int deleteByIds(Collection<K> ks);
 
-    int deleteByEntity(E e);
+	int deleteByEntity(E e);
 
-    int deleteByEntities(Collection<E> es);
+	int deleteByEntities(Collection<E> es);
 
-    long deleteAll();
+	long deleteAll();
 
-    void update(E e);
+	void update(E e);
 
-    void merge(E e);
+	void merge(E e);
 
-    boolean contains(E e);
+	boolean contains(E e);
 
-    E findById(K k);
+	E findById(K k);
 
-    List<E> findList();
+	List<E> findList();
 
 	/*List<E> findList(Page page, Sort sort, Collection<Predicate> predicates);
 
 	List<E> findList(Page page, Sort sort, Predicate... predicates);*/
 
-    long count();
+	long count();
 
 }

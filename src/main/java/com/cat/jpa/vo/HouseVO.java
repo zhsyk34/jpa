@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class BuildVO {
+public class HouseVO {
 
 	private Long id;
 
@@ -20,6 +20,14 @@ public class BuildVO {
 	private LocalDateTime createTime;
 
 	private LocalDateTime updateTime;
+
+	private Long unitId;
+
+	private String unitName;
+
+	private Long buildId;
+
+	private String buildName;
 
 	private Long projectId;
 

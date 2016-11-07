@@ -14,29 +14,32 @@ import java.util.Set;
 @Accessors(chain = true)
 @Entity
 public class Build {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @Column(nullable = false, length = 60)
-    private String name;
+	@Column(nullable = false, length = 60)
+	private String name;
 
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createTime = LocalDateTime.now();
+	@Column(nullable = false, length = 60, unique = true)
+	private String number;
 
-    @Column(nullable = false)
-    private LocalDateTime updateTime = LocalDateTime.now();
+	@Column(nullable = false, updatable = false)
+	private LocalDateTime createTime = LocalDateTime.now();
 
-    @ManyToOne(cascade = {CascadeType.PERSIST}, fetch = FetchType.LAZY)
-    @JoinColumn(name = "projectId", foreignKey = @ForeignKey(name = "fk_build_project"), nullable = false)
-    @JsonIgnore
-    private Project project;
+	@Column(nullable = false)
+	private LocalDateTime updateTime = LocalDateTime.now();
 
-    @OneToMany(mappedBy = "build", cascade = {CascadeType.PERSIST}, fetch = FetchType.LAZY)
-    @JsonIgnore
-    private Set<Unit> units;
+	@ManyToOne(cascade = {CascadeType.PERSIST}, fetch = FetchType.LAZY)
+	@JoinColumn(name = "projectId", foreignKey = @ForeignKey(name = "fk_build_project"), nullable = false)
+	@JsonIgnore
+	private Project project;
 
-    @OneToMany(mappedBy = "build", cascade = {CascadeType.PERSIST}, fetch = FetchType.LAZY)
-    @JsonIgnore
-    private Set<UserBuild> userBuilds;
+	@OneToMany(mappedBy = "build", cascade = {CascadeType.PERSIST}, fetch = FetchType.LAZY)
+	@JsonIgnore
+	private Set<Unit> units;
+
+	@OneToMany(mappedBy = "build", cascade = {CascadeType.PERSIST}, fetch = FetchType.LAZY)
+	@JsonIgnore
+	private Set<UserBuild> userBuilds;
 }

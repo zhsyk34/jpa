@@ -10,15 +10,15 @@ import java.util.List;
 
 public interface UnitDao extends CommonDao<Unit, Long> {
 
-    Unit find(Long buildId, String name);
+	Unit find(Long buildId, String name);
 
-    List<Unit> findList(Long buildId, String name, Page page, Sort sort);
+	List<Unit> findList(Long buildId, String name, Page page, Sort sort);
 
-    long count(Long buildId, String name);
+	long count(Long buildId, String name);
 
-    List<Unit> findList(Collection<Long> buildIds, String projectName, String buildName, String name, Page page, Sort sort);
+	List<Unit> findList(Collection<Long> buildIds, String projectName, String buildName, String name, Page page, Sort sort);
 
-    long count(Collection<Long> buildIds, String projectName, String buildName, String name);
+	long count(Collection<Long> buildIds, String projectName, String buildName, String name);
 
-    List<UnitVO> findVOList(Collection<Long> buildIds, String projectName, String buildName, String name, Page page, Sort sort);
+	List<UnitVO> findVOList(Collection<Long> buildIds, String projectName, String buildName, String name, Page page, Sort sort);
 }

@@ -13,20 +13,20 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class UnitVO {
 
-    private Long id;
+	private Long id;
 
-    private String name;
+	private String name;
 
-    private LocalDateTime createTime;
+	private LocalDateTime createTime;
 
-    private LocalDateTime updateTime;
+	private LocalDateTime updateTime;
 
-    private Long buildId;
+	private Long buildId;
 
-    private String buildName;
+	private String buildName;
 
-    private Long projectId;
+	private Long projectId;
 
-    private String projectName;
+	private String projectName;
 
 }

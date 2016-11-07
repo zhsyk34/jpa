@@ -11,16 +11,18 @@ import java.util.List;
 
 public interface BuildDao extends CommonDao<Build, Long> {
 
-    Build find(Long projectId, String name);
+	Build find(String number);
 
-    List<Build> findList(Long projectId, String name, LocalDate begin, LocalDate end, Page page, Sort sort);
+	Build find(Long projectId, String name);
 
-    long count(Long projectId, String name, LocalDate begin, LocalDate end);
+	List<Build> findList(Long projectId, String name, LocalDate begin, LocalDate end, Page page, Sort sort);
 
-    List<Build> findList(Collection<Long> ids, String name, LocalDate begin, LocalDate end, Page page, Sort sort);
+	long count(Long projectId, String name, LocalDate begin, LocalDate end);
 
-    long count(Collection<Long> ids, String name, LocalDate begin, LocalDate end);
+	List<Build> findList(Collection<Long> ids, String name, LocalDate begin, LocalDate end, Page page, Sort sort);
 
-    List<BuildVO> findVOList(Collection<Long> ids, String name, LocalDate begin, LocalDate end, Page page, Sort sort);
+	long count(Collection<Long> ids, String name, LocalDate begin, LocalDate end);
+
+	List<BuildVO> findVOList(Collection<Long> ids, String name, LocalDate begin, LocalDate end, Page page, Sort sort);
 
 }

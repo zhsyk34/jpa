@@ -1,4 +1,3 @@
-/*建筑物相关*/
 CREATE TABLE IF NOT EXISTS project (
   id         BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   name       VARCHAR(60)     NOT NULL,

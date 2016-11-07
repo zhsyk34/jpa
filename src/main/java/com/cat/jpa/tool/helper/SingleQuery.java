@@ -18,25 +18,25 @@ import java.util.List;
  */
 public abstract class SingleQuery<T> extends QueryCallback<T, T> {
 
-    public final T find(EntityManager manager, Class<T> clazz) {
-        return super.find(manager, clazz, clazz);
-    }
+	public final T find(EntityManager manager, Class<T> clazz) {
+		return super.find(manager, clazz, clazz);
+	}
 
-    public final List<T> findList(EntityManager manager, Class<T> clazz, Page page, List<Sort> sorts) {
-        return super.findList(manager, clazz, clazz, page, sorts);
-    }
+	public final List<T> findList(EntityManager manager, Class<T> clazz, Page page, List<Sort> sorts) {
+		return super.findList(manager, clazz, clazz, page, sorts);
+	}
 
-    public final List<T> findList(EntityManager manager, Class<T> clazz, Page page, Sort sort) {
-        return super.findList(manager, clazz, clazz, page, sort);
-    }
+	public final List<T> findList(EntityManager manager, Class<T> clazz, Page page, Sort sort) {
+		return super.findList(manager, clazz, clazz, page, sort);
+	}
 
-    @Override
-    protected final void execute(CriteriaQuery<T> criteria, Root<T> root) {
-        List<Predicate> list = this.execute(root);
-        if (ValidateKit.notEmpty(list)) {
-            criteria.where(Iterables.toArray(list, Predicate.class));
-        }
-    }
+	@Override
+	protected final void execute(CriteriaQuery<T> criteria, Root<T> root) {
+		List<Predicate> list = this.execute(root);
+		if (ValidateKit.notEmpty(list)) {
+			criteria.where(Iterables.toArray(list, Predicate.class));
+		}
+	}
 
-    protected abstract List<Predicate> execute(Root<T> root);
+	protected abstract List<Predicate> execute(Root<T> root);
 }
